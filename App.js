@@ -5,35 +5,18 @@
  * @format
  * @flow strict-local
  */
-
+import 'react-native-gesture-handler';
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import StackNavigation from './src/routes/StackNavigation';
 
 const App = () => {
   return (
     <>
-      <View style={styles.container}>
-        <Text>Grupo 6</Text>
-      </View>
+    <StackNavigation/>
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-});
+
 
 export default App;
