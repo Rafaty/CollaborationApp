@@ -2,7 +2,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Employees from '../pages/Employees'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-
+Ionicons.loadFont();
 
 const Tab = createBottomTabNavigator();
 
