@@ -9,6 +9,8 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius:20,
         margin:30,
+
+        
     },
     searchIcon: {
         padding: 10,
