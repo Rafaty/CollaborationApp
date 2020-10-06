@@ -1,6 +1,5 @@
-import { Colors } from "react-native/Libraries/NewAppScreen"
 
-const Colors = {
+const colors = {
 
     colorBackground: "#fff",
     colorGreen: "#04d361",
@@ -19,6 +18,6 @@ const Colors = {
     colorBlack: "#0d0d0f",
 }
 
-export default Colors;
+export default colors;
 
 
