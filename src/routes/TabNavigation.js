@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 
 
+import colors from '../colors'
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigation() {
@@ -17,7 +18,7 @@ export default function TabNavigation() {
             iconName = focused
               ? 'ios-home'
               : 'ios-home-outline';
-          } else if (route.name === 'Employee') {
+          } else if (route.name === 'Funcionários') {
             iconName = focused ? 'ios-people-sharp' : 'ios-people-sharp';
           }
 
@@ -26,11 +27,17 @@ export default function TabNavigation() {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: colors.colorPrimaryHover,
         inactiveTintColor: 'gray',
+     
+        labelStyle: {
+          fontSize: 14,
+          margin: 0,
+          padding: 0,
+        },
       }}>
       <Tab.Screen name="Home" component={Employees} />
-      <Tab.Screen name="Employee" component={Employees} />
+      <Tab.Screen name="Funcionários" component={Employees} />
     </Tab.Navigator>
   );
 }
