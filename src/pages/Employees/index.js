@@ -4,8 +4,15 @@ import styles from './styles';
 import InputSearch from '../../components/InputSearch';
 import CardEmployee from '../../components/CardEmployee';
 import {FAB} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native'
 
 const Employees = () => {
+
+  const navigation = useNavigation();
+
+  function navigateToNewEmployee(){
+    navigation.navigate('NewEmployee')
+  }
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -24,7 +31,7 @@ const Employees = () => {
         meddium
         color="#FFF"
         icon="plus"
-        onPress={() => console.log('Pressed')}
+        onPress={navigateToNewEmployee}
       />
     </View>
   );
