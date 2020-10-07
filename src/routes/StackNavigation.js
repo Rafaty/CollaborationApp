@@ -4,7 +4,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import TabNavigation from './TabNavigation'
 import { NavigationContainer } from '@react-navigation/native';
 import Register from '../pages/Employees/Register';
+import Edit from '../pages/Employees/Edit';
+
 const Stack = createStackNavigator();
+
 
 export default function StackNavigation() {
   return (
@@ -17,6 +20,13 @@ export default function StackNavigation() {
           }}
           name="NewEmployee"
           component={Register}
+        />
+        <Stack.Screen
+          options={{
+            title: 'Edição de Funcionário'
+          }}
+          name="EditEmployee"
+          component={Edit}
         />
       </Stack.Navigator>
     </NavigationContainer>

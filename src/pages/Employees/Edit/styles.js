@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
-import colors from '../../colors';
+import colors from '../../../colors';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.colorText,
   },
 
   imageTop: {
@@ -14,6 +14,7 @@ export default StyleSheet.create({
   },
 
   textInput: {
+    height: Platform.OS === 'android' ? 0 : 50,
     borderWidth: 2,
     borderRadius: 10,
     marginHorizontal: 20,
