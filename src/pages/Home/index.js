@@ -8,7 +8,7 @@ const Home = () => {
         <View style={styles.ContainerGeral}>
             <View style={styles.ImageContainer}>
                 <ImageBackground
-                    source={require('../../components/assets/TopHome.png')}
+                    source={require('../../assets/image/TopHome.png')}
                     style={styles.imageTop}>
                 </ImageBackground>
             </View>

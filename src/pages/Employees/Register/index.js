@@ -23,8 +23,8 @@ const Register = () => {
     });
 
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
+    const handleRegister = async () => {
+
         const data = {
             nome: name,
             cpf: cpf,
@@ -46,7 +46,7 @@ const Register = () => {
             <ScrollView>
                 <View style={styles.imageContainer}>
                     <ImageBackground
-                        source={require('../../components/assets/imageTop.png')}
+                        source={require('../../../assets/image/imageTop.png')}
                         style={styles.imageTop}>
                     </ImageBackground>
                 </View>
