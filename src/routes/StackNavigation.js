@@ -10,7 +10,7 @@ export default function StackNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={TabNavigation} />
+        <Stack.Screen name="Home" options={{ headerShown: false }} component={TabNavigation} />
         <Stack.Screen name="NewEmployee" component={Register} />
       </Stack.Navigator>
     </NavigationContainer>
