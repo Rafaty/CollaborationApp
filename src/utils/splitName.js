@@ -1,4 +1,4 @@
-//exemplo get Maria José Alencar da Silva return Maria José 
+//exemplo recebe Maria José Alencar da Silva return Maria José 
 //tem bug se for o nome do Dom Pedro
 export default function splitName(name) {
   const names = name.split(' ');
@@ -19,7 +19,5 @@ export default function splitName(name) {
     default:
       newNme = name;
   }
-
-  console.log('new name = ' +newName)
   return newName;
 }
