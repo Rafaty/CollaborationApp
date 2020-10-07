@@ -5,12 +5,17 @@ import Feather from 'react-native-vector-icons/Feather';
 import colors from '../../colors';
 import mascaraCpf from '../../utils/macaraCpf';
 import UserAvatar from 'react-native-user-avatar';
-import splitName from '../../utils/splitName'
+import splitName from '../../utils/splitName';
+import {Alert} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-const CardEmployee = ({data, onEditPress, onDeletePress}) => {
+const CardEmployee = ({data, deleteAction}) => {
+  const nameToAvatar = splitName(data.nome);
+  const navigation = useNavigation();
 
-  const nameToAvatar = splitName(data.nome)
-  
+  function navigateToEditEmployee(data) {
+    navigation.navigate('EditEmployee', {data});
+  }
 
   return (
     <View style={styles.container}>
@@ -18,7 +23,13 @@ const CardEmployee = ({data, onEditPress, onDeletePress}) => {
         <UserAvatar
           size={50}
           name={nameToAvatar}
-          bgColors={[colors.colorRed, colors.colorGreen, colors.colorOrange,colors.colorPrimaryHover,colors.colorYellow]}
+          bgColors={[
+            colors.colorRed,
+            colors.colorGreen,
+            colors.colorOrange,
+            colors.colorPrimaryHover,
+            colors.colorYellow,
+          ]}
         />
       </View>
       <View styles={styles.containerText}>
@@ -26,11 +37,23 @@ const CardEmployee = ({data, onEditPress, onDeletePress}) => {
         <Text style={styles.cpf}>{mascaraCpf(`${data.cpf}`)}</Text>
       </View>
       <View style={styles.containerIcons}>
-        <TouchableOpacity style={styles.iconEdit} onPress={onEditPress}>
+        <TouchableOpacity style={styles.iconEdit} onPress={()=> {navigateToEditEmployee(data)}}>
           <Feather size={20} name="edit" color={colors.colorText} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.iconDelete} onPress={onDeletePress}>
+        <TouchableOpacity
+          style={styles.iconDelete}
+          onPress={() =>
+            Alert.alert(
+              'Atenção!',
+              `Deseja realmente excluir ${data.nome}`,
+              [
+                {text: 'Cancelar', onPress: () => {}},
+                {text: 'OK', onPress: () => {deleteAction(data)}},
+              ],
+              {cancelable: false},
+            )
+          }>
           <Feather size={20} name="trash" color={colors.colorRed} />
         </TouchableOpacity>
       </View>

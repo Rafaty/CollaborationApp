@@ -1,66 +1,78 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, FlatList, TouchableOpacity} from 'react-native';
-import styles from './styles';
+import {
+  View,
+  SafeAreaView,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {FAB} from 'react-native-paper';
+
+import Loading from '../../components/Loading';
 import InputSearch from '../../components/InputSearch';
 import CardEmployee from '../../components/CardEmployee';
-import {FAB} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
-import api from '../../services/api';
-import Feather from 'react-native-vector-icons/Feather';
+import styles from './styles';
 
-import ConfirmationAlert from '../../components/Alerts/ConfirmationAlert';
-import SuccessAlert from '../../components/Alerts/SuccessAlert';
-import ErrorAlert from '../../components/Alerts/ErrorAlert';
-import Loading from '../../components/Loading';
+import Feather from 'react-native-vector-icons/Feather';
 import ImgEmployee from '../../assets/image/employee.png';
+
+import api from '../../services/api';
+import {NoInternetError, NoDataError} from '../../components/Errors';
 
 const Employees = () => {
   const navigation = useNavigation();
   const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   function navigateToNewEmployee() {
     navigation.navigate('NewEmployee');
   }
-  function navigateToEditEmployee(data) {
-    navigation.navigate('EditEmployee', {data});
-  }
 
-  function handleChange(text) {
-    setSearchTerm(text);
-  }
-
-  function handleDeleteClick(employee) {
-    ConfirmationAlert(
-      `Deseja realmente excluir ${employee.nome} ?`,
-      deleteEmployee(employee),
+  function updateListAfterDelete(employeeToRemove) {
+    const newList = searchResults.filter(
+      (employee) => employee.id !== employeeToRemove.id,
     );
+    setSearchResults(newList);
+    setSearchTerm('');
   }
 
   async function deleteEmployee(employee) {
     try {
-      const response = await api.delete(`funcionario/${employee.id}`);
-      if (response.status == 200) {
-        SuccessAlert('llll');
-      }
-    } catch (err) {
-      ErrorAlert('TESTE');
+      setIsLoading(true);
+
+      await api.delete(`funcionario/${employee.id}`);
+
+      Alert.alert('', 'Funcionário excluido com sucesso!');
+      updateListAfterDelete(employee);
+    } catch {
+      Alert.alert(
+        'Ocorreu um erro!',
+        'Verifique sua conexão ou tente novamente mais tarde!',
+      );
     }
+    setIsLoading(false);
   }
+
   const fecthData = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('funcionario');
-      setEmployees(response.data);
-      setSearchResults(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-    setLoading(false);
+    setIsLoading(true);
+    api
+      .get('funcionario')
+      .then((response) => {
+        setEmployees(response.data);
+        setSearchResults(response.data);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setHasError(true);
+        setIsLoading(false);
+      });
   };
+
   useEffect(() => {
     fecthData();
   }, []);
@@ -73,9 +85,8 @@ const Employees = () => {
   }, [searchTerm]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-      
         <View style={styles.refreshContainer}>
           <TouchableOpacity onPress={fecthData}>
             <Feather name="refresh-ccw" size={35} color="white"></Feather>
@@ -84,19 +95,20 @@ const Employees = () => {
 
         <Image style={styles.image} source={ImgEmployee} />
 
-
         <InputSearch
-          onChangeText={handleChange}
+          onChangeText={setSearchTerm}
           value={searchTerm}
           style={styles.containerInput}
         />
-        
       </View>
-     
 
       <View style={styles.body}>
-        {loading ? (
+        {!isLoading && searchResults.length <= 0 && <NoDataError />}
+
+        {isLoading ? (
           <Loading />
+        ) : hasError ? (
+          <NoInternetError />
         ) : (
           <FlatList
             data={searchResults}
@@ -106,8 +118,8 @@ const Employees = () => {
                 onEditPress={() => {
                   navigateToEditEmployee(item);
                 }}
-                onDeletePress={() => {
-                  handleDeleteClick(item);
+                deleteAction={() => {
+                  deleteEmployee(item);
                 }}
                 key={item.id}
                 data={item}
@@ -124,7 +136,7 @@ const Employees = () => {
         icon="plus"
         onPress={navigateToNewEmployee}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
