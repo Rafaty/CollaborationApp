@@ -1,35 +1,33 @@
 import {StyleSheet} from 'react-native';
 import colors from '../../colors';
+import normalize from '../../utils/normalizeFont';
 
 export default StyleSheet.create({
   container: {
-    height: 90,
+    height: 80,
     backgroundColor: 'white',
     display: 'flex',
     flexDirection: 'row',
     marginTop: 15,
-    marginRight:20,
-    marginLeft:20,
+    marginRight: 15,
+    marginLeft: 15,
     borderRadius: 10,
-    alignSelf: 'stretch',
-    alignContent: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   containerImage: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 10,
   },
   image: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 65,
+    height: 65,
+    borderRadius: 32.5,
   },
   containerIcons: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 10,
   },
   containerText: {
     backgroundColor: 'blue',
@@ -40,10 +38,10 @@ export default StyleSheet.create({
   },
   name: {
     marginTop: 20,
-    fontSize: 25,
+    fontSize: normalize(16),
   },
   cpf: {
-    fontSize: 16,
+    fontSize: normalize(12),
     color: colors.colorText,
   },
   iconEdit: {
