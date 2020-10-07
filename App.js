@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import StackNavigation from './src/routes/StackNavigation';
 
 import SplashScreen from 'react-native-splash-screen';
@@ -21,13 +21,13 @@ Feather.loadFont();
 const App = () => {
 
   useEffect(() => {
-    
-    //SplashScreen.hide()
-    
+
+    SplashScreen.hide()
+
   }, [])
   return (
     <>
-    <StackNavigation/>
+      <StackNavigation />
     </>
   );
 };
