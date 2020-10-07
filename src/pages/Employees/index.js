@@ -113,6 +113,7 @@ const Employees = () => {
           <FlatList
             data={searchResults}
             showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => String(item.id)}
             renderItem={({item}) => (
               <CardEmployee
                 onEditPress={() => {
