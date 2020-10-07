@@ -5,8 +5,6 @@ export default StyleSheet.create({
 
     ContainerGeral: {
         flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
         backgroundColor: colors.colorPrimary,
     },
 
