@@ -2,6 +2,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Employees from '../pages/Employees'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import Home from '../pages/Home';
 
 
 import colors from '../colors'
@@ -36,7 +37,7 @@ export default function TabNavigation() {
           padding: 0,
         },
       }}>
-      <Tab.Screen name="Home" component={Employees} />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Funcionários" component={Employees} />
     </Tab.Navigator>
   );
