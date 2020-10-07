@@ -13,14 +13,16 @@ import SplashScreen from 'react-native-splash-screen';
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 MaterialCommunityIcons.loadFont();
 Ionicons.loadFont();
+Feather.loadFont();
 
 const App = () => {
 
   useEffect(() => {
     
-    SplashScreen.hide()
+    //SplashScreen.hide()
     
   }, [])
   return (
