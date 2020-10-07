@@ -4,7 +4,7 @@ import {View,TextInput} from 'react-native';
 
 import styles from './styles';
 
-const InputSearch = () => {
+const InputSearch = ({value,onChangeText}) => {
   return (
     <View style={styles.searchSection}>
       <Ionicons
@@ -15,8 +15,9 @@ const InputSearch = () => {
       />
       <TextInput
         style={styles.input}
+        value={value}
         placeholder="Pesquisar..."
-        onChangeText={() => {}}
+        onChangeText={(text) => onChangeText(text)}
         underlineColorAndroid="transparent"
       />
     </View>
