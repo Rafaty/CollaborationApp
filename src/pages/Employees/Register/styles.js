@@ -16,6 +16,7 @@ export default StyleSheet.create({
     },
 
     textInput: {
+        height: Platform.OS === 'android' ? 0 : 50,
         borderWidth: 2,
         borderRadius: 10,
         marginHorizontal: 20,

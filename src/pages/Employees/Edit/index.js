@@ -1,33 +1,34 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
-  StyleSheet,
   ImageBackground,
   TextInput,
   TouchableHighlight,
   Text,
 } from 'react-native';
-import colors from '../../colors';
 import styles from './styles';
-import axios from 'axios';
-import {ScrollView} from 'react-native-gesture-handler';
 
-const Edit = () => {
+import {ScrollView} from 'react-native-gesture-handler';
+import api from '../../../services/api'
+
+const Edit = ({route}) => {
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
 
-  const instance = axios.create({
-    baseURL: 'http://residencia-ecommerce.us-east-1.elasticbeanstalk.com/',
-  });
 
-  const editaFuncionario = async (e) => {
-    e.preventDefault();
+
+  useEffect(() => {
+    setName(route.params.data.nome);
+    setCpf(route.params.data.cpf);
+  }, []);
+
+  const editaFuncionario = async () => {
     const data = {
       nome: name,
       cpf: cpf,
     };
     try {
-      await instance.put('funcionario', data);
+      await api.put(`funcionario/${route.params.data.id}`, data);
       setName('');
       setCpf('');
     } catch (e) {
@@ -40,8 +41,8 @@ const Edit = () => {
       <ScrollView>
         <View style={styles.imageContainer}>
           <ImageBackground
-//conferir caminho de '4.png'
-            source={require('../../assets/image/4.png')}
+            //conferir caminho de '4.png'
+            source={require('../../../assets/image/4.png')}
             style={styles.imageTop}></ImageBackground>
         </View>
         <View>
