@@ -5,7 +5,7 @@ const colors = {
     colorRed: "#e83f5b",
     colorOrange: "#fd951f",
     colorYellow: "#f7df1e",
-    colorPrimary: "#7954AB",
+    colorPrimary: "#7159c1",
     colorPrimaryHover: "#9466ff",
     colorSecondary: "#e1e1e6",
     colorText: "#a8a8b3",

@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  Button,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {FAB} from 'react-native-paper';
@@ -19,15 +20,16 @@ import Feather from 'react-native-vector-icons/Feather';
 import ImgEmployee from '../../assets/image/employee.png';
 
 import api from '../../services/api';
-import {NoInternetError, NoDataError} from '../../components/Errors';
+import {NoDataError} from '../../components/Errors';
+
+import getDbConnection from '../../services/database';
 
 const Employees = () => {
   const navigation = useNavigation();
-  const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [employees, setEmployees] = useState([]);
 
   function navigateToNewEmployee() {
     navigation.navigate('NewEmployee');
@@ -39,6 +41,16 @@ const Employees = () => {
     );
     setSearchResults(newList);
     setSearchTerm('');
+  }
+
+  async function saveEmployess(dataFromApi) {
+    const db = await getDbConnection();
+    db.write(() => {
+      dataFromApi.map((employee) => {
+        db.create('Employee', {...employee, sync: true}, 'modified');
+      });
+    });
+    setEmployees(dataFromApi);
   }
 
   async function deleteEmployee(employee) {
@@ -58,23 +70,31 @@ const Employees = () => {
     setIsLoading(false);
   }
 
-  const fecthData = async () => {
+  async function fecthDataFromApi() {
     setIsLoading(true);
     api
       .get('funcionario')
       .then((response) => {
-        setEmployees(response.data);
-        setSearchResults(response.data);
+        saveEmployess(response.data);
         setIsLoading(false);
       })
       .catch(() => {
-        setHasError(true);
         setIsLoading(false);
       });
-  };
+  }
+
+  async function findAllEmployess() {
+    const db = await getDbConnection();
+    let listOfEmployess = db.objects('Employee');
+    setSearchResults(listOfEmployess);
+  }
 
   useEffect(() => {
-    fecthData();
+    fecthDataFromApi();
+  }, []);
+
+  useEffect(() => {
+    findAllEmployess();
   }, []);
 
   useEffect(() => {
@@ -88,7 +108,7 @@ const Employees = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.refreshContainer}>
-          <TouchableOpacity onPress={fecthData}>
+          <TouchableOpacity onPress={fecthDataFromApi}>
             <Feather name="refresh-ccw" size={35} color="white"></Feather>
           </TouchableOpacity>
         </View>
@@ -107,12 +127,11 @@ const Employees = () => {
 
         {isLoading ? (
           <Loading />
-        ) : hasError ? (
-          <NoInternetError />
         ) : (
           <FlatList
             data={searchResults}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handler"
             keyExtractor={(item) => String(item.id)}
             renderItem={({item}) => (
               <CardEmployee
