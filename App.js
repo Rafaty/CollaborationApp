@@ -22,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
 
-    SplashScreen.hide()
+    //SplashScreen.hide()
 
   }, [])
   return (
