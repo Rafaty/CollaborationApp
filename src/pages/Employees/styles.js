@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../../colors';
 
 export default StyleSheet.create({
@@ -38,9 +38,11 @@ export default StyleSheet.create({
     display: 'flex',
   },
   refreshContainer: {
-    flex:1,
+    flex: 1,
     alignSelf: 'flex-end',
+    justifyContent: 'space-between',
     margin: 10,
+    flexDirection: 'row',
   },
 
   fab: {
@@ -54,7 +56,7 @@ export default StyleSheet.create({
   image: {
     flex: 2.5,
     maxWidth: 250,
-    marginLeft:20,
+    marginLeft: 20,
     alignSelf: 'flex-start',
     resizeMode: 'contain',
   },

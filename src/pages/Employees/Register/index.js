@@ -11,6 +11,7 @@ import {
 import colors from '../../../colors';
 import axios from 'axios';
 import styles from './styles';
+import getDbConnetion from '../../../services/database'
 
 const Register = () => {
 
@@ -31,15 +32,29 @@ const Register = () => {
         };
         try {
 
-            await instance.post("funcionario", data);
+            await saveEmployee(data);
             Alert.alert('Cadastro efetuado com sucesso!')
             setName("");
             setCpf("");
 
-        } catch {
+        } catch (e) {
+            console.log(e);
             Alert.alert('Erro ao cadastar.')
         }
     };
+
+    const saveEmployee = async (employee) => {
+        const db = await getDbConnetion();
+        const idLocal = db.objects('Employee').length + 1;
+        db.write(() => {
+            db.create('Employee', {
+                ...employee,
+                idLocal,
+                id: 0,
+                sync: false,
+            });
+        })
+    }
 
     return (
         <View style={styles.container}>

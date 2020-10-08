@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   SafeAreaView,
@@ -8,8 +8,8 @@ import {
   Alert,
   Button,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {FAB} from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { FAB } from 'react-native-paper';
 
 import Loading from '../../components/Loading';
 import InputSearch from '../../components/InputSearch';
@@ -20,7 +20,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import ImgEmployee from '../../assets/image/employee.png';
 
 import api from '../../services/api';
-import {NoDataError} from '../../components/Errors';
+import { NoDataError } from '../../components/Errors';
 
 import getDbConnection from '../../services/database';
 
@@ -45,9 +45,12 @@ const Employees = () => {
 
   async function saveEmployess(dataFromApi) {
     const db = await getDbConnection();
+
     db.write(() => {
       dataFromApi.map((employee) => {
-        db.create('Employee', {...employee, sync: true}, 'modified');
+        const idLocal = db.objects('Employee').length + 1;
+        db.create('Employee', { idLocal, id: employee.id, cpf: employee.cpf, nome: employee.nome, sync: true }, 'modified');
+        console.log(employee);
       });
     });
     setEmployees(dataFromApi);
@@ -83,6 +86,30 @@ const Employees = () => {
       });
   }
 
+  async function sendDataToApi() {
+    const db = await getDbConnection();
+    let listOfEmployess = db.objects('Employee').filtered('sync = false');
+
+    try {
+      if (listOfEmployess.length > 0) {
+        listOfEmployess.map(async (employee) => {
+          const response = await api.post("funcionario", employee);
+          db.write(() => {
+            let dbEmployee = db.create('Employee', { ...employee, sync: true, id: response.data.id }, 'modified');
+            console.log(dbEmployee);
+          })
+        })
+      }
+    }
+
+
+
+    catch (e) {
+      console.log(e);
+    }
+
+  }
+
   async function findAllEmployess() {
     const db = await getDbConnection();
     let listOfEmployess = db.objects('Employee');
@@ -108,6 +135,9 @@ const Employees = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.refreshContainer}>
+          <TouchableOpacity onPress={sendDataToApi}>
+            <Feather style={{ marginRight: 25 }} name="upload-cloud" size={35} color="white"></Feather>
+          </TouchableOpacity>
           <TouchableOpacity onPress={fecthDataFromApi}>
             <Feather name="refresh-ccw" size={35} color="white"></Feather>
           </TouchableOpacity>
@@ -128,25 +158,25 @@ const Employees = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <FlatList
-            data={searchResults}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handler"
-            keyExtractor={(item) => String(item.id)}
-            renderItem={({item}) => (
-              <CardEmployee
-                onEditPress={() => {
-                  navigateToEditEmployee(item);
-                }}
-                deleteAction={() => {
-                  deleteEmployee(item);
-                }}
-                key={item.id}
-                data={item}
-              />
-            )}
-          />
-        )}
+            <FlatList
+              data={searchResults}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handler"
+              keyExtractor={(item) => String(item.id)}
+              renderItem={({ item }) => (
+                <CardEmployee
+                  onEditPress={() => {
+                    navigateToEditEmployee(item);
+                  }}
+                  deleteAction={() => {
+                    deleteEmployee(item);
+                  }}
+                  key={item.id}
+                  data={item}
+                />
+              )}
+            />
+          )}
       </View>
 
       <FAB

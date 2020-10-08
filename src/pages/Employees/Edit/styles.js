@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../../../colors';
 
 export default StyleSheet.create({
@@ -9,12 +9,12 @@ export default StyleSheet.create({
 
   imageTop: {
     marginTop: 30,
-    width: 350,
+    alignSelf: 'stretch',
     height: 250,
   },
 
   textInput: {
-    height: Platform.OS === 'android' ? 0 : 50,
+    height: Platform.OS === 'android' ? 50 : 50,
     borderWidth: 2,
     borderRadius: 10,
     marginHorizontal: 20,

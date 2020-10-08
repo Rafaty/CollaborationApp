@@ -1,11 +1,12 @@
 export default Employee = {
     name: 'Employee',
-    primaryKey: 'id',
+    primaryKey: 'idLocal',
     properties: {
-        id:'int',
+        idLocal: { type: 'int', indexed: true },
+        id: 'int',
         nome: 'string',
         cpf: 'string',
-        sync:'bool',
+        sync: 'bool',
 
     },
 };
