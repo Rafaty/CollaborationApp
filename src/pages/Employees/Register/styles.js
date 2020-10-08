@@ -10,7 +10,7 @@ export default StyleSheet.create({
 
     imageTop: {
         marginTop: 30,
-        width: 350,
+        alignSelf: 'stretch',
         height: 250,
 
     },
