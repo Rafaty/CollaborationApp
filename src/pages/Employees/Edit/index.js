@@ -1,17 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ImageBackground,
   TextInput,
   TouchableHighlight,
   Text,
+  Alert,
 } from 'react-native';
 import styles from './styles';
 
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import api from '../../../services/api'
 
-const Edit = ({route}) => {
+const Edit = ({ route }) => {
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
 
@@ -31,8 +32,9 @@ const Edit = ({route}) => {
       await api.put(`funcionario/${route.params.data.id}`, data);
       setName('');
       setCpf('');
-    } catch (e) {
-      console.log(e);
+      Alert.alert('Funcionário alterado com sucesso.')
+    } catch {
+      Alert.alert('Erro ao editar.')
     }
   };
 
@@ -41,8 +43,7 @@ const Edit = ({route}) => {
       <ScrollView>
         <View style={styles.imageContainer}>
           <ImageBackground
-            //conferir caminho de '4.png'
-            source={require('../../../assets/image/4.png')}
+            source={require('../../../assets/image/imageEdit.png')}
             style={styles.imageTop}></ImageBackground>
         </View>
         <View>
