@@ -3,20 +3,33 @@ import colors from '../../colors';
 
 export default StyleSheet.create({
   ContainerGeral: {
-    height: '100%',
-    alignContent:'center',
-    paddingBottom:20,
+    flex: 1,
+    alignContent: 'center',
+    alignItems:'center',
+    backgroundColor: colors.colorPrimary,
   },
 
-  ContainerCentral: {
-    height: '100%',
+  TextTop: {
+    fontSize: 20,
+    textAlign: 'center',
+
+    fontWeight: 'bold',
   },
+
+
+  TopContainer:{
+    alignItems:'center',
+  },
+
+  ImageTop: {
+    height: 120,
+    width: 120,
+    resizeMode:'contain',
+  },
+
   ImageContainer:{
-    height: '50%',
-  },
-  
-  imageTop: {
-    height: '100%',
-    backgroundColor:colors.colorPrimary,
-  },
+    height:250,
+    width:300,
+    resizeMode:'contain',
+  }
 });
