@@ -1,23 +1,23 @@
 import React from 'react'
-import { View, ImageBackground } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import styles from './styles';
-import CardHome from '../../components/CardHome';
-import { ScrollView } from 'react-native-gesture-handler';
+import HomeImage from '../../assets/image/Home.png';
+import Logo from '../../assets/image/logo.png';
+
 
 const Home = () => {
     return (
+        
         <View style={styles.ContainerGeral}>
-            <ScrollView>
-                <View style={styles.ImageContainer}>
-                    <ImageBackground
-                        source={require('../../assets/image/TopHome.png')}
-                        style={styles.imageTop}>
-                    </ImageBackground>
+            <View style={styles.TopContainer}>
+                <Image style={styles.ImageTop} source={Logo}/>
+                <Text style={styles.TextTop}>
+                    Bem-Vindo ao CollaboratiON !
+                </Text>
+            </View>
+                <View>
+                    <Image style={styles.ImageContainer} source={HomeImage}/>
                 </View>
-                <View style={styles.ContainerCentral}>
-                    <CardHome />
-                </View>
-            </ScrollView>
         </View>
     )
 }
