@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ImageBackground,
@@ -6,36 +6,90 @@ import {
   TouchableHighlight,
   Text,
   Alert,
+  ScrollView,
 } from 'react-native';
 import styles from './styles';
-import { ScrollView } from 'react-native-gesture-handler';
-import api from '../../../services/api'
 
-const Edit = ({ route }) => {
+import api from '../../../services/api';
+import getDbConnection from '../../../services/database';
+import {useNavigation} from '@react-navigation/native';
+
+const Edit = ({route}) => {
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
-
-
-
-  useEffect(() => {
-    setName(route.params.data.nome);
-    setCpf(route.params.data.cpf);
-  }, []);
+  const navigation = useNavigation();
 
   const editaFuncionario = async () => {
     const data = {
       nome: name,
       cpf: cpf,
     };
+
     try {
-      await api.put(`funcionario/${route.params.data.id}`, data);
-      setName('');
-      setCpf('');
-      Alert.alert('Funcionário alterado com sucesso.')
-    } catch {
-      Alert.alert('Erro ao editar.')
+      const db = await getDbConnection();
+
+      let employeeToEdit = db
+        .objects('Employee')
+        .filtered(`id = ${route.params.data.id}`);
+
+      console.log(employeeToEdit);
+      //atualizando remoto e local
+      if (employeeToEdit[0].sync) {
+        try {
+          await api.put(`funcionario/${route.params.data.id}`, data);
+
+          db.write(() => {
+            db.create(
+              'Employee',
+              {
+                idLocal: employeeToEdit[0].idLocal,
+                id: route.params.id,
+                nome: name,
+                cpf: cpf,
+                sync: true,
+              },
+              true,
+            );
+          });
+
+          setName('');
+          setCpf('');
+          Alert.alert('Funcionário alterado com sucesso.');
+          navigation.goBack();
+        } catch (error) {
+          Alert.alert('Desculpe, ocorreu um erro');
+        }
+      } else {
+        //atualizando somente local
+        try {
+          db.write(() => {
+            db.create(
+              'Employee',
+              {
+                idLocal: employeeToEdit.idLocal,
+                id: employeeToEdit.id,
+                nome: name,
+                cpf: cpf,
+                sync: false,
+              },
+              true,
+            );
+          });
+          Alert.alert('Funcionário alterado com sucesso.');
+          navigation.goBack();
+        } catch (error) {
+          Alert.alert('Desculpe, ocorreu um erro.');
+        }
+      }
+    } catch (error) {
+      Alert.alert('Desculpe, ocorreu um erro');
     }
   };
+
+  useEffect(() => {
+    setName(route.params.data.nome);
+    setCpf(route.params.data.cpf);
+  }, []);
 
   return (
     <View style={styles.container}>
