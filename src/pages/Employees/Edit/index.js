@@ -9,7 +9,6 @@ import {
   ScrollView,
 } from 'react-native';
 import styles from './styles';
-
 import api from '../../../services/api';
 import getDbConnection from '../../../services/database';
 import {useNavigation} from '@react-navigation/native';
