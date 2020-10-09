@@ -6,13 +6,13 @@ import {
   TouchableHighlight,
   Text,
   Alert,
+  ScrollView,
 } from 'react-native';
 import styles from './styles';
-
-import {ScrollView} from 'react-native-gesture-handler';
 import api from '../../../services/api';
 import getDbConnection from '../../../services/database';
 import {useNavigation} from '@react-navigation/native';
+
 
 const Edit = ({route}) => {
   const [name, setName] = useState('');
