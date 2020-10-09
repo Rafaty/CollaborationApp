@@ -57,55 +57,25 @@ const Employees = () => {
             'never',
           );
         });
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     });
     setEmployees(dataFromApi);
-    setSearchResults(dataFromApi);
   }
 
   async function deleteEmployee(employee) {
     try {
       setIsLoading(true);
 
-      const db = await getDbConnection();
+      await api.delete(`funcionario/${employee.id}`);
 
-      let employeeToDelete = db
-        .objects('Employee')
-        .filtered(`id = ${employee.id}`);
-
-      if (employeeToDelete[0].sync == true) {
-        try {
-          await api.delete(`funcionario/${employee.id}`);
-
-          db.write(() => {
-            db.delete(employeeToDelete[0]);
-          });
-          Alert.alert('', 'Funcionário excluido com sucesso!');
-        } catch (error) {
-          Alert.alert(
-            'Ocorreu um erro!',
-            'Verifique sua conexão ou tente novamente mais tarde!' + error,
-          );
-        }
-      } else {
-        try {
-          db.write(() => {
-            db.delete(employeeToDelete[0]);
-          });
-
-          Alert.alert('', 'Funcionário excluido com sucesso!');
-        } catch (error) {
-          Alert.alert(
-            'Ocorreu um erro!',
-            'Verifique sua conexão ou tente novamente mais tarde!' + error,
-          );
-        }
-      }
+      Alert.alert('', 'Funcionário excluido com sucesso!');
       updateListAfterDelete(employee);
-    } catch (error) {
+    } catch {
       Alert.alert(
         'Ocorreu um erro!',
-        'Verifique sua conexão ou tente novamente mais tarde!' + error,
+        'Verifique sua conexão ou tente novamente mais tarde!',
       );
     }
     
@@ -149,19 +119,14 @@ const Employees = () => {
               );
             });
           } catch (err) {
-            Alert.alert(
-              'Desculpe, ocorreu um erro ao enviar os dados, verifique sua conexão!',
-            );
+            Alert.alert('Desculpe, ocorreu um erro ao enviar os dados!')
           }
         });
-        Alert.alert('Dados enviados com sucesso!');
-      } else {
-        Alert.alert('Seus dados já estão sincronizados!');
+
       }
+      Alert.alert('Dados enviados com sucesso!')
     } catch (e) {
-      Alert.alert(
-        'Desculpe, ocorreu um erro ao enviar os dados, verifique sua conexão!',
-      );
+      Alert.alert('Desculpe, ocorreu um erro ao enviar os dados!')
     }
     setIsLoading(false);
   }
@@ -169,6 +134,7 @@ const Employees = () => {
   async function findAllEmployess() {
     const db = await getDbConnection();
     let listOfEmployess = db.objects('Employee');
+    console.log(listOfEmployess);
     setSearchResults(listOfEmployess);
     setEmployees(listOfEmployess);
   }
@@ -182,14 +148,10 @@ const Employees = () => {
   }, []);
 
   useEffect(() => {
-    if (searchTerm != '') {
-      const results = employees.filter((employee) =>
-        employee.nome.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-      setSearchResults(results);
-    }else{
-      findAllEmployess();
-    }
+    const results = employees.filter((employee) =>
+      employee.nome.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+    setSearchResults(results);
   }, [searchTerm]);
 
   return (
