@@ -108,6 +108,7 @@ const Employees = () => {
         'Verifique sua conexão ou tente novamente mais tarde!' + error,
       );
     }
+    
     setIsLoading(false);
   }
 
