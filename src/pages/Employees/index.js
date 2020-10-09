@@ -74,7 +74,7 @@ const Employees = () => {
         .filtered(`id = ${employee.id}`);
 
       if (employeeToDelete[0].sync == true) {
-        try {
+        try { 
           await api.delete(`funcionario/${employee.id}`);
 
           db.write(() => {
