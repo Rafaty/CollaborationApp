@@ -31,7 +31,6 @@ const Edit = ({route}) => {
         .objects('Employee')
         .filtered(`id = ${route.params.data.id}`);
 
-      console.log(employeeToEdit);
       //atualizando remoto e local
       if (employeeToEdit[0].sync) {
         try {
