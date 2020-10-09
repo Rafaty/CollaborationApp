@@ -92,6 +92,7 @@ const Employees = () => {
       const response = await api.get('funcionario');
       if (response.data.length > 0) {
         saveEmployess(response.data);
+        findAllEmployess();
       }
       setIsLoading(false);
     } catch {
