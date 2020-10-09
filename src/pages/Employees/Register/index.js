@@ -35,16 +35,20 @@ const Register = () => {
     };
 
     const saveEmployee = async (employee) => {
+
+    
         const db = await getDbConnetion();
         const idLocal = db.objects('Employee').length + 1;
+
         db.write(() => {
             db.create('Employee', {
                 ...employee,
                 idLocal,
-                id: 0,
+                id: idLocal,
                 sync: false,
             });
         })
+
     }
 
     return (
