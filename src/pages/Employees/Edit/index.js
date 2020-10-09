@@ -8,7 +8,6 @@ import {
   Alert,
 } from 'react-native';
 import styles from './styles';
-
 import { ScrollView } from 'react-native-gesture-handler';
 import api from '../../../services/api'
 

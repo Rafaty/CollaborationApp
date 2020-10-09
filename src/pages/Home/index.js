@@ -7,17 +7,17 @@ import Logo from '../../assets/image/logo.png';
 
 const Home = () => {
     return (
-        
+
         <View style={styles.ContainerGeral}>
             <View style={styles.TopContainer}>
-                <Image style={styles.ImageTop} source={Logo}/>
+                <Image style={styles.ImageTop} source={Logo} />
                 <Text style={styles.TextTop}>
                     Bem-Vindo ao CollaboratiON !
                 </Text>
             </View>
-                <View>
-                    <Image style={styles.ImageContainer} source={HomeImage}/>
-                </View>
+            <View>
+                <Image style={styles.ImageBottom} source={HomeImage} />
+            </View>
         </View>
     )
 }
