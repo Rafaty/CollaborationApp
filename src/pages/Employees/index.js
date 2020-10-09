@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -8,8 +8,8 @@ import {
   Alert,
   Button,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { FAB } from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import {FAB} from 'react-native-paper';
 
 import Loading from '../../components/Loading';
 import InputSearch from '../../components/InputSearch';
@@ -20,7 +20,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import ImgEmployee from '../../assets/image/employee.png';
 
 import api from '../../services/api';
-import { NoDataError } from '../../components/Errors';
+import {NoDataError} from '../../components/Errors';
 
 import getDbConnection from '../../services/database';
 
@@ -47,11 +47,23 @@ const Employees = () => {
     const db = await getDbConnection();
 
     db.write(() => {
-      dataFromApi.map((employee) => {
-        const idLocal = db.objects('Employee').length + 1;
-        db.create('Employee', { idLocal, id: employee.id, cpf: employee.cpf, nome: employee.nome, sync: true }, 'modified');
-        console.log(employee);
-      });
+      try {
+        dataFromApi.map((employee) => {
+          db.create(
+            'Employee',
+            {
+              idLocal: employee.id,
+              id: employee.id,
+              cpf: employee.cpf,
+              nome: employee.nome,
+              sync: true,
+            },
+            'never',
+          );
+        });
+      } catch (error) {
+        console.log(error);
+      }
     });
     setEmployees(dataFromApi);
   }
@@ -75,44 +87,56 @@ const Employees = () => {
 
   async function fecthDataFromApi() {
     setIsLoading(true);
-    api
-      .get('funcionario')
-      .then((response) => {
+
+    try {
+      const response = await api.get('funcionario');
+      if (response.data.length > 0) {
         saveEmployess(response.data);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsLoading(false);
-      });
+      }
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+    }
   }
 
   async function sendDataToApi() {
     const db = await getDbConnection();
     let listOfEmployess = db.objects('Employee').filtered('sync = false');
-
+    setIsLoading(true);
     try {
       if (listOfEmployess.length > 0) {
         listOfEmployess.map(async (employee) => {
-          const response = await api.post("funcionario", employee);
-          db.write(() => {
-            let dbEmployee = db.create('Employee', { ...employee, sync: true, id: response.data.id }, 'modified');
-            console.log(dbEmployee);
-          })
-        })
+          try {
+            console.log('employe', employee);
+            const response = await api.post('funcionario', {
+              nome: employee.nome,
+              cpf: employee.cpf,
+            });
+
+            db.write(() => {
+              db.create(
+                'Employee',
+                {idLocal: employee.idLocal, id: response.data.id, sync: true},
+                true,
+              );
+            });
+          } catch (err) {
+            Alert.alert('Desculpe, ocorreu um erro ao enviar os dados!')
+          }
+        });
+
       }
+      Alert.alert('Dados enviados com sucesso!')
+    } catch (e) {
+      Alert.alert('Desculpe, ocorreu um erro ao enviar os dados!')
     }
-
-
-
-    catch (e) {
-      console.log(e);
-    }
-
+    setIsLoading(false);
   }
 
   async function findAllEmployess() {
     const db = await getDbConnection();
     let listOfEmployess = db.objects('Employee');
+    console.log(listOfEmployess);
     setSearchResults(listOfEmployess);
   }
 
@@ -136,7 +160,11 @@ const Employees = () => {
       <View style={styles.headerContainer}>
         <View style={styles.refreshContainer}>
           <TouchableOpacity onPress={sendDataToApi}>
-            <Feather style={{ marginRight: 25 }} name="upload-cloud" size={35} color="white"></Feather>
+            <Feather
+              style={{marginRight: 25}}
+              name="upload-cloud"
+              size={35}
+              color="white"></Feather>
           </TouchableOpacity>
           <TouchableOpacity onPress={fecthDataFromApi}>
             <Feather name="refresh-ccw" size={35} color="white"></Feather>
@@ -158,25 +186,25 @@ const Employees = () => {
         {isLoading ? (
           <Loading />
         ) : (
-            <FlatList
-              data={searchResults}
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handler"
-              keyExtractor={(item) => String(item.id)}
-              renderItem={({ item }) => (
-                <CardEmployee
-                  onEditPress={() => {
-                    navigateToEditEmployee(item);
-                  }}
-                  deleteAction={() => {
-                    deleteEmployee(item);
-                  }}
-                  key={item.id}
-                  data={item}
-                />
-              )}
-            />
-          )}
+          <FlatList
+            data={searchResults}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handler"
+            keyExtractor={(item) => String(item.id)}
+            renderItem={({item}) => (
+              <CardEmployee
+                onEditPress={() => {
+                  navigateToEditEmployee(item);
+                }}
+                deleteAction={() => {
+                  deleteEmployee(item);
+                }}
+                key={item.id}
+                data={item}
+              />
+            )}
+          />
+        )}
       </View>
 
       <FAB

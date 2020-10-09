@@ -9,7 +9,6 @@ import {
     Alert,
 } from 'react-native';
 import colors from '../../../colors';
-import axios from 'axios';
 import styles from './styles';
 import getDbConnetion from '../../../services/database'
 
@@ -18,27 +17,19 @@ const Register = () => {
     const [name, setName] = useState("")
     const [cpf, setCpf] = useState("")
 
-    const instance = axios.create({
-        baseURL: 'http://residencia-ecommerce.us-east-1.elasticbeanstalk.com/'
-
-    });
-
-
+   
     const handleRegister = async () => {
-
         const data = {
             nome: name,
             cpf: cpf,
         };
         try {
-
             await saveEmployee(data);
             Alert.alert('Cadastro efetuado com sucesso!')
             setName("");
             setCpf("");
 
         } catch (e) {
-            console.log(e);
             Alert.alert('Erro ao cadastar.')
         }
     };
