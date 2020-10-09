@@ -6,7 +6,6 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  Button,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {FAB} from 'react-native-paper';
@@ -35,11 +34,8 @@ const Employees = () => {
     navigation.navigate('NewEmployee');
   }
 
-  function updateListAfterDelete(employeeToRemove) {
-    const newList = searchResults.filter(
-      (employee) => employee.id !== employeeToRemove.id,
-    );
-    setSearchResults(newList);
+  function updateListAfterDelete() {
+    findAllEmployess();
     setSearchTerm('');
   }
 
@@ -82,6 +78,7 @@ const Employees = () => {
         'Verifique sua conexão ou tente novamente mais tarde!',
       );
     }
+    
     setIsLoading(false);
   }
 
@@ -92,6 +89,7 @@ const Employees = () => {
       const response = await api.get('funcionario');
       if (response.data.length > 0) {
         saveEmployess(response.data);
+        findAllEmployess();
       }
       setIsLoading(false);
     } catch {
@@ -138,6 +136,7 @@ const Employees = () => {
     let listOfEmployess = db.objects('Employee');
     console.log(listOfEmployess);
     setSearchResults(listOfEmployess);
+    setEmployees(listOfEmployess);
   }
 
   useEffect(() => {

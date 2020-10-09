@@ -7,11 +7,13 @@ import {
   Text,
   Alert,
   ScrollView,
+  LogBox,
 } from 'react-native';
 import styles from './styles';
 import api from '../../../services/api';
 import getDbConnection from '../../../services/database';
 import {useNavigation} from '@react-navigation/native';
+
 
 const Edit = ({route}) => {
   const [name, setName] = useState('');
@@ -31,7 +33,6 @@ const Edit = ({route}) => {
         .objects('Employee')
         .filtered(`id = ${route.params.data.id}`);
 
-      console.log(employeeToEdit);
       //atualizando remoto e local
       if (employeeToEdit[0].sync) {
         try {
@@ -89,6 +90,7 @@ const Edit = ({route}) => {
     setName(route.params.data.nome);
     setCpf(route.params.data.cpf);
   }, []);
+  LogBox.ignoreLogs([ 'Non-serializable values were found in the navigation state', ]);
 
   return (
     <View style={styles.container}>
