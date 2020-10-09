@@ -13,7 +13,6 @@ import api from '../../../services/api';
 import getDbConnection from '../../../services/database';
 import {useNavigation} from '@react-navigation/native';
 
-
 const Edit = ({route}) => {
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
