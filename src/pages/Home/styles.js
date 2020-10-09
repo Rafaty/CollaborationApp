@@ -5,31 +5,29 @@ export default StyleSheet.create({
   ContainerGeral: {
     flex: 1,
     alignContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
     backgroundColor: colors.colorPrimary,
   },
 
   TextTop: {
-    fontSize: 20,
+    fontSize: 25,
     textAlign: 'center',
-
     fontWeight: 'bold',
   },
 
-
-  TopContainer:{
-    alignItems:'center',
+  TopContainer: {
+    alignItems: 'center',
   },
 
   ImageTop: {
-    height: 120,
-    width: 120,
-    resizeMode:'contain',
+    height: 180,
+    width: 180,
+    resizeMode: 'contain',
   },
 
-  ImageContainer:{
-    height:250,
-    width:300,
-    resizeMode:'contain',
+  ImageBottom: {
+    height: "80%",
+    width: 450,
+    resizeMode: 'contain',
   }
 });
