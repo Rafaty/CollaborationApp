@@ -19,19 +19,15 @@ Ionicons.loadFont();
 Feather.loadFont();
 
 const App = () => {
-
+  
   useEffect(() => {
-
     SplashScreen.hide()
-
   }, [])
+
   return (
     <>
       <StackNavigation />
     </>
   );
 };
-
-
-
 export default App;
