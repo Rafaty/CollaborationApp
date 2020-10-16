@@ -13,10 +13,10 @@ Pré-requisitos do trabalho:
      - Usabilidade
   
  
-<p><img src="https://github.com/Rafaty/CollaborationApp/blob/master/screenshots/employees.png"  width="400" height="700" alt="test"></p>
-<p><img src="https://github.com/Rafaty/CollaborationApp/blob/master/screenshots/home.png"  width="400" height="700" alt="test"></p>
-<p><img src="https://github.com/Rafaty/CollaborationApp/blob/master/screenshots/new.png"  width="400" height="700" alt="test"></p>
-<p><img src="https://github.com/Rafaty/CollaborationApp/blob/master/screenshots/edit.png"  width="400" height="700" alt="test"></p>
+<p><img src="https://github.com/Rafaty/CollaborationApp/blob/master/screenshots/employees.png"  width="500" height="800" alt="test"></p><br>
+<p><img src="https://github.com/Rafaty/CollaborationApp/blob/master/screenshots/home.png"  width="500" height="800" alt="test"></p><br>
+<p><img src="https://github.com/Rafaty/CollaborationApp/blob/master/screenshots/new.png"  width="500" height="800" alt="test"></p><br>
+<p><img src="https://github.com/Rafaty/CollaborationApp/blob/master/screenshots/edit.png"  width="500" height="800" alt="test"></p>
 
 
 
